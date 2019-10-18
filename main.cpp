@@ -191,7 +191,7 @@ void Play(string dir){
     vector<int> temp;
     vector<vector<int>> check = squares;
 
-    if(dir == "UP"){
+    if(dir == "check"){ //checks if valid move available if not gameover, only calls if a random square spawn fills the last empty square
         for(int x = 0; x < 4; x++){
             for(int y = 0; y < 4; y++){
                 line.push_back(squares[x][y]);
@@ -204,7 +204,7 @@ void Play(string dir){
                     }
                 }
             }
-           
+        
             for(int j = 0; j < 3; j++){
                 for(int i = 0; i < 3; i++){
                     if(line[i] == line[i + 1] && line[i] != 0){
@@ -215,112 +215,235 @@ void Play(string dir){
                 }
             }
             for(int i = 0; i < 4; i++){
-                squares[x][i] = line[i];
+                check[x][i] = line[i];
             }
             line.clear();
         }
-        if(check == squares){}
-        else{
-            Spawn();
-        }
-    } else if(dir == "LEFT"){
-        for(int y = 0; y < 4; y++){
-            for(int x = 0; x < 4; x++){
-                line.push_back(squares[x][y]);
-            }
-            for(int j = 0; j < 4; j++){
+        if(check == squares){
+            check = squares;
+            for(int y = 0; y < 4; y++){
+                for(int x = 0; x < 4; x++){
+                    line.push_back(squares[x][y]);
+                }
+                for(int j = 0; j < 4; j++){
+                    for(int i = 0; i < 4; i++){
+                        if(line[i] == 0){ 
+                            line.erase(line.begin()+i);
+                            line.push_back(0);
+                        }
+                    }
+                }
+            
+                for(int j = 0; j < 3; j++){
+                    for(int i = 0; i < 3; i++){
+                        if(line[i] == line[i + 1] && line[i] != 0){
+                            line[i]*=2;
+                            line.erase(line.begin()+i+1);
+                            line.push_back(0);
+                        }
+                    }
+                }
                 for(int i = 0; i < 4; i++){
-                    if(line[i] == 0){ 
-                        line.erase(line.begin()+i);
-                        line.push_back(0);
+                    check[i][y] = line[i];
+                }
+                line.clear();
+            }
+            if(check == squares){
+                check = squares;
+                for(int x = 0; x < 4; x++){
+                    for(int y = 3; y >= 0; y--){
+                        line.push_back(squares[x][y]);
+                    }
+                    for(int j = 0; j < 4; j++){
+                        for(int i = 0; i < 4; i++){
+                            if(line[i] == 0){ 
+                                line.erase(line.begin()+i);
+                                line.push_back(0);
+                            }
+                        }
+                    }
+                
+                    for(int j = 0; j < 3; j++){
+                        for(int i = 0; i < 3; i++){
+                            if(line[i] == line[i + 1] && line[i] != 0){
+                                line[i]*=2;
+                                line.erase(line.begin()+i+1);
+                                line.push_back(0);
+                            }
+                        }
+                    }
+                    for(int i = 0; i < 4; i++){
+                        check[x][3 - i] = line[i];
+                    }
+                    line.clear();
+                }
+                if(check == squares){
+                    check = squares;
+                    for(int y = 0; y < 4; y++){
+                        for(int x = 3; x >= 0; x--){
+                            line.push_back(squares[x][y]);
+                        }
+                        for(int j = 0; j < 4; j++){
+                            for(int i = 0; i < 4; i++){
+                                if(line[i] == 0){ 
+                                    line.erase(line.begin()+i);
+                                    line.push_back(0);
+                                }
+                            }
+                        }
+                    
+                        for(int j = 0; j < 3; j++){
+                            for(int i = 0; i < 3; i++){
+                                if(line[i] == line[i + 1] && line[i] != 0){
+                                    line[i]*=2;
+                                    line.erase(line.begin()+i+1);
+                                    line.push_back(0);
+                                }
+                            }
+                        }
+                        for(int i = 0; i < 4; i++){
+                            check[3 - i][y] = line[i];
+                        }
+                        line.clear();
+                    }
+                    if(check == squares){
+                        Restart();
                     }
                 }
             }
-           
-            for(int j = 0; j < 3; j++){
-                for(int i = 0; i < 3; i++){
-                    if(line[i] == line[i + 1] && line[i] != 0){
-                        line[i]*=2;
-                        line.erase(line.begin()+i+1);
-                        line.push_back(0);
-                    }
-                }
-            }
-            for(int i = 0; i < 4; i++){
-                squares[i][y] = line[i];
-            }
-            line.clear();
-        }
-        if(check == squares){}
-        else{
-            Spawn();
-        }
-    } else if(dir == "DOWN"){
-        for(int x = 0; x < 4; x++){
-            for(int y = 3; y >= 0; y--){
-                line.push_back(squares[x][y]);
-            }
-            for(int j = 0; j < 4; j++){
-                for(int i = 0; i < 4; i++){
-                    if(line[i] == 0){ 
-                        line.erase(line.begin()+i);
-                        line.push_back(0);
-                    }
-                }
-            }
-           
-            for(int j = 0; j < 3; j++){
-                for(int i = 0; i < 3; i++){
-                    if(line[i] == line[i + 1] && line[i] != 0){
-                        line[i]*=2;
-                        line.erase(line.begin()+i+1);
-                        line.push_back(0);
-                    }
-                }
-            }
-            for(int i = 0; i < 4; i++){
-                squares[x][3 - i] = line[i];
-            }
-            line.clear();
-        }
-        if(check == squares){}
-        else{
-            Spawn();
-        }
-    } else if(dir == "RIGHT"){
-        for(int y = 0; y < 4; y++){
-            for(int x = 3; x >= 0; x--){
-                line.push_back(squares[x][y]);
-            }
-            for(int j = 0; j < 4; j++){
-                for(int i = 0; i < 4; i++){
-                    if(line[i] == 0){ 
-                        line.erase(line.begin()+i);
-                        line.push_back(0);
-                    }
-                }
-            }
-           
-            for(int j = 0; j < 3; j++){
-                for(int i = 0; i < 3; i++){
-                    if(line[i] == line[i + 1] && line[i] != 0){
-                        line[i]*=2;
-                        line.erase(line.begin()+i+1);
-                        line.push_back(0);
-                    }
-                }
-            }
-            for(int i = 0; i < 4; i++){
-                squares[3 - i][y] = line[i];
-            }
-            line.clear();
-        }
-        if(check == squares){}
-        else{
-            Spawn();
         }
     }
-    else{}
+    else{
+        if(dir == "UP"){
+            for(int x = 0; x < 4; x++){
+                for(int y = 0; y < 4; y++){
+                    line.push_back(squares[x][y]);
+                }
+                for(int j = 0; j < 4; j++){
+                    for(int i = 0; i < 4; i++){
+                        if(line[i] == 0){ 
+                            line.erase(line.begin()+i);
+                            line.push_back(0);
+                        }
+                    }
+                }
+            
+                for(int j = 0; j < 3; j++){
+                    for(int i = 0; i < 3; i++){
+                        if(line[i] == line[i + 1] && line[i] != 0){
+                            line[i]*=2;
+                            line.erase(line.begin()+i+1);
+                            line.push_back(0);
+                        }
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    squares[x][i] = line[i];
+                }
+                line.clear();
+            }
+            if(check == squares){}
+            else{
+                Spawn();
+            }
+        } else if(dir == "LEFT"){
+            for(int y = 0; y < 4; y++){
+                for(int x = 0; x < 4; x++){
+                    line.push_back(squares[x][y]);
+                }
+                for(int j = 0; j < 4; j++){
+                    for(int i = 0; i < 4; i++){
+                        if(line[i] == 0){ 
+                            line.erase(line.begin()+i);
+                            line.push_back(0);
+                        }
+                    }
+                }
+            
+                for(int j = 0; j < 3; j++){
+                    for(int i = 0; i < 3; i++){
+                        if(line[i] == line[i + 1] && line[i] != 0){
+                            line[i]*=2;
+                            line.erase(line.begin()+i+1);
+                            line.push_back(0);
+                        }
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    squares[i][y] = line[i];
+                }
+                line.clear();
+            }
+            if(check == squares){}
+            else{
+                Spawn();
+            }
+        } else if(dir == "DOWN"){
+            for(int x = 0; x < 4; x++){
+                for(int y = 3; y >= 0; y--){
+                    line.push_back(squares[x][y]);
+                }
+                for(int j = 0; j < 4; j++){
+                    for(int i = 0; i < 4; i++){
+                        if(line[i] == 0){ 
+                            line.erase(line.begin()+i);
+                            line.push_back(0);
+                        }
+                    }
+                }
+            
+                for(int j = 0; j < 3; j++){
+                    for(int i = 0; i < 3; i++){
+                        if(line[i] == line[i + 1] && line[i] != 0){
+                            line[i]*=2;
+                            line.erase(line.begin()+i+1);
+                            line.push_back(0);
+                        }
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    squares[x][3 - i] = line[i];
+                }
+                line.clear();
+            }
+            if(check == squares){}
+            else{
+                Spawn();
+            }
+        } else if(dir == "RIGHT"){
+            for(int y = 0; y < 4; y++){
+                for(int x = 3; x >= 0; x--){
+                    line.push_back(squares[x][y]);
+                }
+                for(int j = 0; j < 4; j++){
+                    for(int i = 0; i < 4; i++){
+                        if(line[i] == 0){ 
+                            line.erase(line.begin()+i);
+                            line.push_back(0);
+                        }
+                    }
+                }
+            
+                for(int j = 0; j < 3; j++){
+                    for(int i = 0; i < 3; i++){
+                        if(line[i] == line[i + 1] && line[i] != 0){
+                            line[i]*=2;
+                            line.erase(line.begin()+i+1);
+                            line.push_back(0);
+                        }
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    squares[3 - i][y] = line[i];
+                }
+                line.clear();
+            }
+            if(check == squares){}
+            else{
+                Spawn();
+            }
+        }
+    }
 }
 
 void Draw(){
@@ -358,18 +481,11 @@ void Spawn(){
     else
         num = 2;
     
-    int randSquare;
-    if(empty.size() == 1){
-        randSquare = 0;
-    }
-    else if(empty.size() == 0){
-        Restart();
-    }
-    else{
-        randSquare = rand() % (empty.size() / 2);
-    }
+    int randSquare = rand() % empty.size() / 2;
     if(empty.size() != 0){
         squares[empty[randSquare * 2]][empty[randSquare * 2 + 1]] = num;
+        if(empty.size() == 2)
+            Play("check");
     }
 }
 
